@@ -1,0 +1,35 @@
+﻿
+#notif {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 50px;
+    background-color: orangered;
+    opacity: 0.8;
+    border: 1px solid green;
+    border-radius: 4px;
+    text-align: center; /* Center text inside the div */
+    width: 90%;
+    margin: auto;
+    font-weight: bold; /* Make the text bold */
+}
+
+#notif2 {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 50px;
+    background-color: rosybrown;
+    opacity: 0.8;
+    border: 1px solid green;
+    border-radius: 4px;
+    text-align: center; /* Center text inside the div */
+    width: 90%;
+    margin: auto;
+    font-weight: bold; /* Make the text bold */
+}
+
+
+#linkNotif {
+    margin-left:15px;
+}

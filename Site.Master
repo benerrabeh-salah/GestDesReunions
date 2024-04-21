@@ -1,0 +1,102 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="GestDesReunions.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <title><%: Page.Title %> Gestion Reunion</title>
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="Asset/css/StyleSheet1.css" rel="stylesheet" />
+    <link href="Content/toastr.css" rel="stylesheet" />
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+<body>
+    <form runat="server">
+        <!-- nav bar -->
+        <nav style="background-color: mediumaquamarine" class="navbar navbar-expand-sm navbar-toggleable-sm  border-bottom box-shadow">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                    <button type="button" id="menu-toggle" class="btn btn-primary" style="position: fixed; top: 8px; left: 30px;">
+                        <i class="fa fa-bars"></i>
+                        <span class="sr-only">Toggle Menu</span>
+                    </button>
+                </nav>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Gestion Réunions V1</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row ">
+                    <ul class="navbar-nav flex-grow-1">
+                    </ul>
+                    <ul class="navbar-nav flex" style="position: absolute; right: 200px">
+                        <li>
+                            <a class="nav-link " asp-area="" asp-page="/Login">
+                                <asp:Label runat="server" ID="userValue"></asp:Label>
+                            </a>
+                        </li>
+
+                        <li>
+                            
+                                <asp:LinkButton class="nav-link " ID="LinkBtnDeconnexion" OnClientClick="return confirm('Voulez vous déconnecter ?');" runat="server" OnClick="LinkBtnDeconnexion_Click">Se déconnecter</asp:LinkButton>
+                            
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!--fin nav bar -->
+
+
+
+        <div class="d-flex" id="wrapper">
+            <div style="background-color: mediumaquamarine;" id="sidebar-wrapper">
+                <div class="sidebar-heading">
+                    Menu
+                </div>
+                <div class=" list-group list-group-flush">
+                    <a href="~/Dashboard/Dashboard.aspx" id="dashboardId" visible="true" style="background-color: mediumaquamarine;" runat="server" class="list-group-item list-group-item-action">Tableau de bord</a>
+                    <a href="~/MAJ/ListeReunions.aspx" id="listReunionsId" visible="false" style="background-color: mediumaquamarine;" runat="server" class="list-group-item list-group-item-action">Liste réunions</a>
+                    <a id="consultId" visible="false" href="~/Filtrage/FiltrerLesReunion.aspx" style="background-color: mediumaquamarine;" runat="server" class=" list-group-item list-group-item-action">Recherche</a>
+                    <a id="ajoutId" visible="false" href="~/MAJ/SaisieReunion.aspx" style="background-color: mediumaquamarine;" runat="server" class=" list-group-item list-group-item-action ">Saisie nouvelle réunion</a>
+                    <a id="modifId" visible="false" href="~/MAJ/ModifReunion.aspx" style="background-color: mediumaquamarine;" runat="server" class=" list-group-item list-group-item-action ">Modification</a>
+                    <a id="adminId" visible="false" style="background-color: mediumaquamarine" href="Admin/Utilisateur.aspx" runat="server" class="list-group-item list-group-item-action ">Utilisateurs</a>
+                    <a href="~/Contact.aspx" runat="server" style="background-color: mediumaquamarine;" class=" list-group-item list-group-item-action  ">Contactez-nous</a>
+                </div>
+            </div>
+            <div id="page-content-wrapper">
+
+                <div class="container-fluid" style="background-color: #E9EBEE;">
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                    </asp:ContentPlaceHolder>
+
+                    <footer>
+                        <hr />
+                        &copy; DSIC <%: DateTime.Now.Year %>
+                    </footer>
+                </div>
+            </div>
+        </div>
+
+        <script src="Scripts/bootstrap.bundle.min.js"></script>
+        <script src="Scripts/toastr.js"></script>
+        <script src="Scripts/jquery-3.4.1.min.js"></script>
+        <script>
+            $("#menu-toggle").click(function (e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
+        </script>
+
+
+    </form>
+</body>
+</html>
