@@ -730,39 +730,67 @@ namespace GestDesReunions.Filtrage
             return dbHelper.GetDataTable(query);
         }
 
-        private void ExportDataTableToExcel(DataTable dataTable)
+        private void ExportDataTableToExcel(DataTable dt)
         {
-            // Create a new Excel package
-            using (ExcelPackage package = new ExcelPackage())
+            var templateFilePath = Server.MapPath("~/Filtrage/ReportFilter/woorksheetTemplaite.xlsx");
+            using (var templateStream = new FileStream(templateFilePath, FileMode.Open))
+            using (var excelPackage = new ExcelPackage(templateStream))
             {
-                // Add a new worksheet to the Excel package
-                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Reunion Data");
-
-                // Add column headers to the Excel worksheet
-                for (int i = 0; i < dataTable.Columns.Count; i++)
+                // Get the worksheet where you want to insert data or add a new one if needed
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.FirstOrDefault(sheet => sheet.Name == "Sheet1");
+                if (worksheet == null)
                 {
-                    worksheet.Cells[1, i + 1].Value = dataTable.Columns[i].ColumnName;
+                    worksheet = excelPackage.Workbook.Worksheets.Add("Sheet1");
                 }
 
-                // Add data rows to the Excel worksheet
-                for (int row = 0; row < dataTable.Rows.Count; row++)
+                // Populate Excel worksheet with data from DataTable
+                int rowIndex = 3; // Start from the second row assuming the first row is for headers
+                foreach (DataRow row in dt.Rows)
                 {
-                    for (int col = 0; col < dataTable.Columns.Count; col++)
-                    {
-                        worksheet.Cells[row + 2, col + 1].Value = dataTable.Rows[row][col];
-                    }
+                    worksheet.Cells[rowIndex, 1].Value = row.Field<string>(0); // Insert data into column A
+                    worksheet.Cells[rowIndex, 2].Value = row.Field<string>(1); // Insert data into column B
+                    worksheet.Cells[rowIndex, 3].Value = row.Field<string>(2); // Insert data into column C
+                    worksheet.Cells[rowIndex, 4].Value = row.Field<string>(3); // Insert data into column D
+                    worksheet.Cells[rowIndex, 5].Value = row.Field<string>(4); // Insert data into column E
+                    worksheet.Cells[rowIndex, 6].Value = row.Field<string>(5); // Insert data into column F
+                    worksheet.Cells[rowIndex, 7].Value = row.Field<string>(6); // Insert data into column G
+                    worksheet.Cells[rowIndex, 8].Value = row.Field<string>(7); // Insert data into column H
+                    worksheet.Cells[rowIndex, 9].Value = row.Field<string>(8); // Insert data into column I
+                    worksheet.Cells[rowIndex, 10].Value = row.Field<string>(9); // Insert data into column J
+                    worksheet.Cells[rowIndex, 11].Value = row.Field<string>(10); // Insert data into column K
+                    worksheet.Cells[rowIndex, 12].Value = row.Field<string>(11); // Insert data into column L
+                    worksheet.Cells[rowIndex,1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[rowIndex,2].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[rowIndex,3].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[rowIndex,4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[rowIndex,5].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[rowIndex,6].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[rowIndex,7].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[rowIndex,8].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[rowIndex,9].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[rowIndex,10].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[rowIndex,11].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    worksheet.Cells[rowIndex,12].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
+                    rowIndex++; // Move to the next row
                 }
 
-                // Prepare the response for file download
-                byte[] fileBytes = package.GetAsByteArray();
+                // Save the Excel package to a file
+                byte[] excelBytes = excelPackage.GetAsByteArray();
+
+                // Send the Excel file to the client as a downloadable file
                 Response.Clear();
                 Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                Response.AddHeader("content-disposition", $"attachment;filename=ReunionData_{DateTime.Now:yyyyMMddHHmmss}.xlsx");
-                Response.BinaryWrite(fileBytes);
-                Response.Flush();
+                Response.AddHeader("content-disposition", $"attachment; filename=Réunion{DateTime.Now}.xlsx");
+                Response.BinaryWrite(excelBytes);
                 Response.End();
             }
+            
+
+
         }
+
+
 
         protected void Details_Click(object sender, EventArgs e)
         {
